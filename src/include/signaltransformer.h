@@ -26,9 +26,11 @@ public:
 	std::vector<double> getValues();
 	CArray getSpectrum();
 	static double corrCoef(std::vector<double> X, std::vector<double> Y);
+	static double XcorrCoef(CArray X, CArray Y);
+	static void fft(CArray& x);
+	static void ifft(CArray& x);
 
 private:
-	void fft(CArray& x);
 	double m_min;
 	double m_max;
 	double m_average;

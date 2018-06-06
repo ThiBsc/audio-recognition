@@ -88,6 +88,14 @@ double SignalTransformer::corrCoef(std::vector<double> X, std::vector<double> Y)
     return corr;
 }
 
+double SignalTransformer::XcorrCoef(CArray X, CArray Y)
+{
+	// corr(a, b) = ifft(fft(a_and_zeros) * conj(fft(b_and_zeros)))
+	CArray z = X * Y.apply(std::conj);
+	ifft(z);
+	return 0.0;
+}
+
 void SignalTransformer::fft(CArray& x)
 {
 	const size_t N = x.size();
@@ -107,4 +115,19 @@ void SignalTransformer::fft(CArray& x)
         x[k    ] = even[k] + t;
         x[k+N/2] = even[k] - t;
     }
+}
+
+void SignalTransformer::ifft(CArray& x)
+{
+    // conjugate the complex numbers
+    x = x.apply(std::conj);
+ 
+    // forward fft
+    fft( x );
+ 
+    // conjugate the complex numbers again
+    x = x.apply(std::conj);
+ 
+    // scale the numbers
+    x /= x.size();
 }
